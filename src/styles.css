@@ -5,31 +5,17 @@ body, html {
     height: 100%;
     display: grid;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 #root {
-    width: 500px;
+    width: 90vw;
 }
 
-@media (max-width: 500px) {
+@media (orientation: landscape) and (min-width: 600px) {
     #root {
-        width: 100vw;
-    }
-    h2 {
-        font-size: 20px !important;
-    }
-    h3 {
-        font-size: 18px !important;
-    }
-    h4 {
-        font-size: 16px !important;
-    }
-    h5 {
-        font-size: 14px !important;
-    }
-    h6 {
-        font-size: 12px !important;
+        width: 550px;
+        margin: 5px 0;
     }
 }
 

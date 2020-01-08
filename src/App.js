@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Button, Row, Col, InputGroup, Media, FormControl } from 'react-bootstrap';
+import { Button, Row, Col, InputGroup, Media, FormControl } from 'react-bootstrap';
 import ForecastList from './ForecastList.component'
 import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,7 +76,7 @@ class App extends React.Component {
           case 'Clear' : return 'night';
           case 'Rain' : return 'rainy5';
           case 'Snow' : return 'snowy5';
-          case 'Clouds' : return 'cloudynight2';
+          case 'Clouds' : if(e.clouds.all > 75) {return 'cloudy'} else return 'cloudynight2';
           default: return 'night';
         }
       }
@@ -85,7 +85,7 @@ class App extends React.Component {
           case 'Clear' : return 'day';
           case 'Rain' : return 'rainy5';
           case 'Snow' : return 'snowy5';
-          case 'Clouds' : return 'cloudyday2';
+          case 'Clouds' : if(e.clouds.all > 75) {return 'cloudy'} else return 'cloudyday2';
           default: return 'day';
         }
       }
@@ -100,9 +100,9 @@ class App extends React.Component {
     
     
     return(
-      <>
-        <h2 className="title-custom text-center text-white py-2 bg-primary rounded-pill">Weather Forecast App</h2>
-        <InputGroup className="px-auto my-2">
+      <div>
+        <h2 className="text-center text-white p-2 bg-primary rounded-pill">Weather Forecast App</h2>
+        <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text>City:</InputGroup.Text>
           </InputGroup.Prepend>
@@ -113,19 +113,19 @@ class App extends React.Component {
           value={this.state.cityInput}
           placeholder="put city name..."></FormControl>
         </InputGroup>
-        {this.state.weatherData.cod === '404' && <Container>{this.state.weatherData.message}</Container>}
-        {this.state.weatherData.cod === '200' && <Container>
+        {this.state.weatherData.cod === '404' && <div>{this.state.weatherData.message}</div>}
+        {this.state.weatherData.cod === '200' && <div>
         <h3 className="text-center">{this.state.weatherData.city.name}, {this.state.weatherData.city.country}</h3>
           <h4 className="text-center">{this.state.activeHour.dt_txt.slice(0,16)}</h4>
           <Row className="align-items-center">
             <Col>
               <Media>
-                <img src={icon[weatherIcon(this.state.activeHour)]} alt="weather icon" width='100%' className="ml-5"/>
+                <img src={icon[weatherIcon(this.state.activeHour)]} alt="weather icon" width='90%' className="ml-5"/>
               </Media>
             </Col>
-            <Col className="border-left">
+            <Col className="border-left d-flex flex-column">
               <h2 className="mb-0">{Number(this.state.activeHour.main.temp).toFixed(1)}&#xb0; C</h2>
-              <h6 >Feels like: {this.state.activeHour.main.feels_like}&#xb0; C</h6>
+              <h6>Feels like: {this.state.activeHour.main.feels_like}&#xb0; C</h6>
               <h5 className="mb-0">{this.state.activeHour.weather[0].description}</h5>
               <h6>Cloud coverage: {this.state.activeHour.clouds.all}%</h6>
               <br></br>
@@ -133,7 +133,7 @@ class App extends React.Component {
               <h4>{this.state.activeHour.main.grnd_level} hPa</h4>
             </Col>
           </Row>
-          <Row className="pt-2 mt-1 border-top " >
+          <Row className="pt-2 border-top " >
             <Col className="text-right">
               <h5>Wind: {Number(this.state.activeHour.wind.speed).toFixed(1)} m/s</h5>
               <h5>Direction: <img src={icon.arrow} alt="wind direction" style={{transform: `rotate(${this.state.activeHour.wind.deg + 90}deg)`}}/></h5>
@@ -143,7 +143,7 @@ class App extends React.Component {
               <h5>Precipitation: {this.state.activeHour.rain ? this.state.activeHour.rain['3h'] : 0} mm</h5>
             </Col>
           </Row>
-          <Row className="border-top mt-2 pt-2 mb-1">
+          <Row className="border-top pt-2">
             <Col className="text-center">
               <h2>5 day forecast</h2>
             </Col>
@@ -158,8 +158,8 @@ class App extends React.Component {
             </Row>
             <Button className="px-2 py-0 btn-success" onClick={() => run('right')}>&#x2192;</Button>
           </Row>
-        </Container>}
-      </>
+        </div>}
+      </div>
     )
   }
 }
